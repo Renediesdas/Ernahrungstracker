@@ -1,0 +1,2 @@
+INSERT INTO food (name, Kalorien, Protein, Fett, Kohlenhydrate, Salz, Zucker)
+VALUES ('Haferflocken', 368, 13.5, 7, 58, 0, 0.7);

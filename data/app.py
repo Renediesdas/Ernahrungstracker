@@ -28,6 +28,7 @@ def get_db():
     conn = psycopg2.connect(DB_CONN)
     return conn
 
+
 @app.route("/")
 def index():
     with get_db() as conn:

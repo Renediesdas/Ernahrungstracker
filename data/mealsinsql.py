@@ -1,24 +1,40 @@
-import sqlite3
-import csv
+import psycopg2
+import psycopg2.extras
+import os
 
-DB_PATH = "data.db"
+DB_CONN = os.getenv("172.22.0.11", "dbname=tracker user=tracker password=tracker host=172.22.0.11 port=5432")
+food = []
+nährstoffe = []
 
-def import_csv(file_path):
-    conn = sqlite3.connect(DB_PATH)
-    cursor = conn.cursor()
+def insertmeal():
+    while True:
+        name = input ("Name oder Stop: ")
+        if name.lower() == "stop":
+            break
+        gram = int(input("Gram: "))
 
-    with open(file_path, newline='', encoding="utf-8") as csvfile:
-        reader = csv.reader(csvfile)
-        for row in reader:
-            for item in row:
-                print(item)
-                cursor.execute(
-                    "INSERT INTO meals (name) VALUES (?)",
-                    (item,)  # kcal und fat bleiben leer
-                )
-    conn.commit()
-    conn.close()
-    print("CSV erfolgreich importiert ✅")
+        food.append({"Name": name, "Gram": gram})
+
+        print(food)
+
+    for e in food:
+        print("e: ", e["Name"])
+        with psycopg2.connect(DB_CONN) as conn:
+            with conn.cursor() as cur:
+                cur.execute("SELECT * FROM food WHERE name= %s", (e["Name"],))
+                result = cur.fetchall()
+                nährstoffe.append(result)
+                headers = [desc[0] for desc in cur.description]
+
+    if nährstoffe:
+        print(headers)
+        for row in nährstoffe:
+            print(row)
+    else:
+        print("kein eintrag gefunden2:" , name)
+    print("worked2")
+                        
+
 
 if __name__ == "__main__":
-    import_csv("grocyproducts.csv")
+    insertmeal()
