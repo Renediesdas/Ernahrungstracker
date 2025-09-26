@@ -1,0 +1,1 @@
+scp -r -i C:\Users\Rene\.ssh\id_ed25519_debianserverpi E:\GitHub\ernahrungstracker\ root@192.168.178.28:/data/dockercontainer/

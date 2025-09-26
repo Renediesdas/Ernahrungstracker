@@ -1,0 +1,4 @@
+flask
+nicegui
+sqlalchemy
+psycopg2-binary
