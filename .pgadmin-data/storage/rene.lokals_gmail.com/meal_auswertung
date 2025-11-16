@@ -1,0 +1,14 @@
+SELECT 
+meal.name AS meal,
+CAST(SUM(food.kalorien * meal_zutaten.gram / 100.0) AS NUMERIC(10,2)) AS total_kc,
+CAST(SUM(food.protein * meal_zutaten.gram / 100.0) AS NUMERIC(10,2)) AS total_protein,
+CAST(SUM(food.fett * meal_zutaten.gram / 100.0) AS NUMERIC(10,2)) AS total_fett,
+CAST(SUM(food.kohlenhydrate * meal_zutaten.gram / 100.0) AS NUMERIC(10,2)) AS total_kohlenhydrate,
+CAST(SUM(food.salz * meal_zutaten.gram / 100.0) AS NUMERIC(10,2)) AS total_salz,
+CAST(SUM(food.zucker * meal_zutaten.gram / 100.0) AS NUMERIC(10,2)) AS total_zucker,
+CAST(SUM(food.ballaststoffe * meal_zutaten.gram / 100.0) AS NUMERIC(10,2)) AS total_ballaststoffe
+FROM meal_zutaten
+JOIN meal ON meal_zutaten.meal_id=meal.id
+JOIN food ON meal_zutaten.food_id=food.id
+WHERE meal.name LIKE '%Bolo%'
+GROUP BY meal.name

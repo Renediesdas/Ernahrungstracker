@@ -1,0 +1,13 @@
+SELECT 
+COALESCE(meal.name, 'Gesamt') AS name,
+COALESCE(gegessen.datum, CURRENT_DATE) as Datum,
+CAST(SUM(food.protein * meal_zutaten.gram / 100.0) AS NUMERIC(10,2)) AS total_protein,
+CAST(SUM(food.fett * meal_zutaten.gram / 100.0) AS NUMERIC(10,2)) AS total_fett,
+CAST(SUM(food.kohlenhydrate * meal_zutaten.gram / 100.0) AS NUMERIC(10,2)) AS total_kohlenhydrate,
+CAST(SUM(food.zucker * meal_zutaten.gram / 100.0) AS NUMERIC(10,2)) AS total_zucker
+FROM gegessen
+JOIN meal ON gegessen.meal = meal.id
+JOIN meal_zutaten ON gegessen.meal = meal_zutaten.meal_id
+JOIN food ON meal_zutaten.food_id = food.id
+WHERE datum = '2025-10-16'
+GROUP BY ROLLUP (gegessen.datum, meal.name);

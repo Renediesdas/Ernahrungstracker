@@ -1,0 +1,9 @@
+SELECT 
+meal.name AS meal,
+food.name AS zutat,
+meal_zutaten.gram AS gram
+FROM meal_zutaten
+JOIN meal ON meal_zutaten.meal_id=meal.id
+JOIN food ON meal_zutaten.food_id=food.id
+WHERE meal.name LIKE '%Butterchicken%'
+ORDER BY meal
